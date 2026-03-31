@@ -1,3 +1,8 @@
+import NaiveSearch from "./strategies/naive-search.js";
+import RabinKarp from "./strategies/rabin-karp.js";
+import KMP from "./strategies/kmp.js";
+import BoyerMoore from "./strategies/boyer-moore.js";
+
 let currentStrategy;
 
 export function setStrategy(type) {

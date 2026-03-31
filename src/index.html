@@ -1,21 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comparação de Algoritmos - Busca em Strings</title>
-</head>
-  <body>
-    <h1>Comparação de Algoritmos - Busca em Strings</h1>
-    <p>Este é um exemplo simples de página para comparar diferentes algoritmos de busca em strings.</p>
 
-    <div>
-      <h2>Algoritmos de Busca</h2>
-      <ul>
-        <li><a href="algoritmo1.html">Algoritmo 1: Busca Linear</a></li>
-        <li><a href="algoritmo2.html">Algoritmo 2: Busca Binária</a></li>
-        <li><a href="algoritmo3.html">Algoritmo 3: KMP (Knuth-Morris-Pratt)</a></li>
-      </ul>      
-    </div>
-  </body>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>Comparação de Algoritmos de Busca em Strings</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- PAINEL DE CONTROLE -->
+    <section class="card">
+      <h2>Configuração</h2>
+
+      <label>Upload</label>
+      <div class="upload-container">
+        <input type="file" id="uploadTxt" name="myFiles" accept=".txt" multiple class="hidden-input">
+
+        <label for="uploadTxt" class="upload-button">
+          <span>📁 Carregar arquivos .txt</span>
+        </label>
+
+        <textarea name="content" id="textInput" placeholder="Digite aqui..."></textarea>
+      </div>
+
+      <br>
+      <label>String de Busca (Pattern)</label>
+      <input type="text" id="patternInput" placeholder="Digite a string de busca (pattern).">
+
+      <br>
+      <label>Algoritmo</label>
+      <select id="algorithmSelect">
+        <option value="naive">Naive</option>
+        <option value="kmp">KMP</option>
+        <option value="rabin-karp">Rabin-Karp</option>
+        <option value="boyer-moore">Boyer-Moore</option>
+      </select>
+
+      <button id="runBtn">Executar</button>
+      <button id="stepBtn">Passo a passo</button>
+      <button id="nextStepBtn">Próximo passo</button>
+
+    </section>
+
+    <!-- RESULTADOS -->
+    <section class="results">
+
+      <!-- MÉTRICAS -->
+      <div class="card metrics">
+        <h2>Métricas</h2>
+        <p><strong>Tempo:</strong> <span id="time">-</span></p>
+        <p><strong>Comparações:</strong> <span id="comparisons">-</span></p>
+        <p><strong>Tamanho do texto:</strong> <span id="textSize">-</span></p>
+        <p><strong>Tamanho do padrão:</strong> <span id="patternSize">-</span></p>
+        <p><strong>Complexidade:</strong> <span id="complexity">-</span></p>
+      </div>
+
+      <!-- VISUALIZAÇÃO -->
+      <div class="card">
+        <h2>Visualização</h2>
+
+        <div id="textDisplay"></div>
+
+        <h3>Log</h3>
+        <div id="visualization"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module" src="./js/ui.js"></script>
+</body>
 </html>

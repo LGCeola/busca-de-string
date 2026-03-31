@@ -51,6 +51,7 @@ nextStepBtn.addEventListener("click", () => {
 
   if (step.done) {
     log("Execução finalizada.");
+    stepIndicator = null;
     return;
   }
 
@@ -76,11 +77,11 @@ function handleStep(step) {
       break;
 
     case "shift":
-      log(`Shift de ${step.shift}`);
+      log(`Shift de ${step.newI}`);
       break;
 
     case "jump":
-      log(`Jump -> ${step.position}`);
+      log(`Jump -> ${step.newJ ?? step.to}`);
       break;
 
     case "collision":
@@ -147,3 +148,23 @@ function highlight(i, j, match) {
 
   textDisplay.innerHTML = result;
 }
+
+// Função de upload
+document.getElementById('uploadTxt').addEventListener('change', function(e) {
+  const files = e.target.files;
+  const textArea = document.getElementById('textInput');
+  
+  textArea.value = "";
+
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const content = event.target.result;
+
+      textArea.value += content;
+    };
+
+    reader.readAsText(file);
+  });
+});

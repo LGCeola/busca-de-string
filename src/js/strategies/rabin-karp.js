@@ -1,4 +1,4 @@
-import SearchStrategy from "./search-strategy";
+import SearchStrategy from "./search-strategy.js";
 
 export default class RabinKarp extends SearchStrategy {
   search(text, pattern) {
@@ -57,14 +57,14 @@ export default class RabinKarp extends SearchStrategy {
   }
 
   *stepByStep(text, pattern) {
-    const base = 526;
+    const base = 256;
     const mod = 101;
     
     const n = text.length
     const m  = pattern.length;
 
-    let patterHash = 0;
-    let taxtHash = 0;
+    let patternHash = 0;
+    let textHash = 0;
     let h = 1;
 
     for (let i = 0; i < m - 1; i++) {
@@ -76,7 +76,7 @@ export default class RabinKarp extends SearchStrategy {
       textHash = (base * textHash + text.charCodeAt(i)) % mod;
     }
 
-    for (let i = 0; i <= m - m; i++) {
+    for (let i = 0; i <= n - m; i++) {
       yield {
         type: "hashCompare",
         index: i,
@@ -138,6 +138,11 @@ export default class RabinKarp extends SearchStrategy {
           removedChar: text[i],
           addedChar: text[i + m]
         };
+
+        yield {
+          type: "shift",
+          newI: i + 1
+        }
       }
     }
   }

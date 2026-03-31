@@ -10,11 +10,18 @@ export function measureExecution(strategy, text, pattern) {
 }
 
 export function getComplexity(algorithm) {
-  const complexities = {
+  const algorithms = {
     naive: "O(n * m)",
-    rabinKarp: "O(n + m) (médio)",
+    rk: "O(n + m) (médio)",
     kmp: "O(n + m)",
-    boyerMoore: "O(n / m) (melhor caso)"
+    bm: "O(n / m) (melhor caso)"
+  };
+
+  const complexities = {
+    naive: algorithms.naive,
+    "rabin-karp": algorithms.rk,
+    kmp: algorithms.kmp,
+    "boyer-moore": algorithms.bm
   };
 
   return complexities[algorithm] || "Complexidade desconhecida";

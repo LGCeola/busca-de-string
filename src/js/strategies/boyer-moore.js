@@ -1,4 +1,4 @@
-import SearchStrategy from "./search-strategy";
+import SearchStrategy from "./search-strategy.js";
 
 export default class BoyerMoore extends SearchStrategy {
   buildBadCharTable(pattern) {
@@ -53,7 +53,7 @@ export default class BoyerMoore extends SearchStrategy {
 
     let i = 0;
 
-    while (i <= text.length - pattern,length) {
+    while (i <= text.length - pattern.length) {
       let j = pattern.length - 1;
 
       while (j >= 0) {
@@ -101,8 +101,10 @@ export default class BoyerMoore extends SearchStrategy {
         yield {
           type: "shift",
           shift,
-          reason: `bad char '${text[i + j]}`
-        }
+          reason: `bad char '${text[i + j]}'`
+        };
+
+        i += shift;
       }
     }
   }

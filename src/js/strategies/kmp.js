@@ -1,4 +1,4 @@
-import SearchStrategy from "./search-strategy";
+import SearchStrategy from "./search-strategy.js";
 
 export default class KMP extends SearchStrategy {
   // LPS : Longest Prefix Suffix
@@ -30,7 +30,7 @@ export default class KMP extends SearchStrategy {
     const lps = this.buildLPS(pattern);
 
     let i = 0;
-    let j =0;
+    let j = 0;
 
     let matches = [];
     let comparisons = 0;
@@ -42,7 +42,23 @@ export default class KMP extends SearchStrategy {
         i++;
         j++;
       }
+
+      if (j === pattern.length) {
+        matches.push(i - j);
+        j = lps[j - 1];
+      }
+
+      else if (i < text.length && pattern[j] !== text[i]) {
+
+        if (j !== 0) {
+          j = lps[j - 1];
+        } else {
+          i++;
+        }
+      }
     }
+
+    return { matches, comparisons };
   }
 
   *stepByStep(text, pattern) {
@@ -72,18 +88,17 @@ export default class KMP extends SearchStrategy {
       if (j === pattern.length) {
         yield {
           type: "match",
-          position: i -j
+          position: i - j
         };
 
         j = lps[j - 1];
+
         yield {
           type: "jump",
-          newJ: j,
-          reason: "Uso da LPS após match"
+          newJ: j
         };
       }
-
-      else if (i < text.length && !match) {
+      else if (!match) {
         if (j !== 0) {
           const oldJ = j;
           j = lps[j - 1];
@@ -91,8 +106,7 @@ export default class KMP extends SearchStrategy {
           yield {
             type: "jump",
             from: oldJ,
-            to: j,
-            reason: "Uso da LPS evita recomparação"
+            to: j
           };
         } else {
           i++;

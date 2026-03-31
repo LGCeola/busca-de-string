@@ -1,4 +1,4 @@
-import SearchStrategy from "./search-strategy";
+import SearchStrategy from "./search-strategy.js";
 
 export default class NaiveSearch extends SearchStrategy {
   search(text, pattern) {
@@ -24,16 +24,33 @@ export default class NaiveSearch extends SearchStrategy {
   *stepByStep(text, pattern) {
     for (let i = 0; i <= text.length - pattern.length; i++) {
       for (let j = 0; j < pattern.length; j++) {
+
+        const match = text[i + j] === pattern[j];
         yield {
+          type: "compare",
           i,
           j,
           textChar: text[i + j],
           patternChar: pattern[j],
-          match: text[i + j] === pattern[j]
+          match
         };
 
-        if (text[i + j] !== pattern[j]) break;
+        if (!match) break;
+
+        if (j === pattern.length) {
+          yield {
+            type: "match",
+            position: i
+          };
+        }
+
+        yield {
+          type: "shift",
+          newI: i + 1
+        };
       }
     }
+
+    return;
   }
 }
