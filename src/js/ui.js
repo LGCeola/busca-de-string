@@ -77,7 +77,7 @@ function handleStep(step) {
       break;
 
     case "shift":
-      log(`Shift de ${step.newI}`);
+      log(`Shift de ${step.newI ?? step.newIndex ?? step.shift}`);
       break;
 
     case "jump":
@@ -95,6 +95,8 @@ function handleStep(step) {
     case "rehash":
       log(`Rehash -${step.removedChar} +${step.addedChar}`);
       break;
+    default:
+      console.warn("Tipo de passo desconhecido:", step);
   }
 }
 

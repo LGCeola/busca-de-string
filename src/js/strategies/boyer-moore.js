@@ -19,7 +19,7 @@ export default class BoyerMoore extends SearchStrategy {
 
     let i = 0;
 
-    while (i <= text.length - pattern.lentgh) {
+    while (i <= text.length - pattern.length) {
       let j = pattern.length - 1;
 
       while (j >= 0 && pattern[j] === text[i + j]) {
