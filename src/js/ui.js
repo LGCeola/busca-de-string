@@ -1,8 +1,11 @@
 import { setStrategy } from "./main.js";
-import { measureExecution, formatMetrics } from "./metrics.js";
+import { measureExecution, formatMetrics, createSearchResult } from "./metrics.js";
+import { initializeTelemetry, createSearchSpan, recordSearchMetrics, logTelemetry } from "./telemetry.js";
 
 let currentStrategy = null;
 let stepIndicator = null;
+
+initializeTelemetry();
 
 const textInput = document.getElementById("textInput");
 const patternInput = document.getElementById("patternInput");
@@ -23,13 +26,44 @@ runBtn.addEventListener("click", () => {
   clearLog();
   getStrategy();
 
-  const raw = measureExecution(currentStrategy, text, pattern);
-  const metrics = formatMetrics(raw, text, pattern, algorithm);
+  const span = createSearchSpan(algorithm, text.length, pattern.length);
 
-  updateMetrics(metrics);
-  renderMatches(text, pattern, raw.matches);
+  try {
+    const raw = measureExecution(currentStrategy, text, pattern);
+    const searchResult = createSearchResult(raw, text, pattern, algorithm);
+    const metrics = formatMetrics(searchResult);
 
-  log(`Execução finalizada. ${raw.matches.length} matches encontrados.`);
+    recordSearchMetrics({
+      algorithm,
+      matches: raw.matches.length,
+      comparisons: raw.comparisons,
+      time: raw.time
+    });
+
+    span.setAttribute("search.matches", raw.matches.length);
+    span.setAttribute("search.comparisons", raw.comparisons);
+    span.setAttribute("search.duration_ms", raw.time);
+
+    updateMetrics(metrics);
+    renderMatches(text, pattern, raw.matches);
+
+    log(`Execução finalizada. ${raw.matches.length} matches encontrados.`);
+    logTelemetry("search.completed", {
+      algorithm,
+      durationMs: raw.time,
+      comparisons: raw.comparisons,
+      matches: raw.matches.length
+    });
+  } catch (error) {
+    span.recordException(error);
+    logTelemetry("search.error", {
+      algorithm,
+      error: error.message
+    });
+    throw error;
+  } finally {
+    span.end();
+  }
 });
 
 stepBtn.addEventListener("click", () => {

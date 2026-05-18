@@ -1,3 +1,5 @@
+﻿import SearchResult from "./search-result.js";
+
 export function measureExecution(strategy, text, pattern) {
   const start = performance.now();
   const result = strategy.search(text, pattern);
@@ -12,29 +14,34 @@ export function measureExecution(strategy, text, pattern) {
 export function getComplexity(algorithm) {
   const algorithms = {
     naive: "O(n * m)",
-    rk: "O(n + m) (médio)",
+    "rabin-karp": "O(n + m) (médio)",
     kmp: "O(n + m)",
-    bm: "O(n / m) (melhor caso)"
+    "boyer-moore": "O(n / m) (melhor caso)"
   };
 
-  const complexities = {
-    naive: algorithms.naive,
-    "rabin-karp": algorithms.rk,
-    kmp: algorithms.kmp,
-    "boyer-moore": algorithms.bm
-  };
-
-  return complexities[algorithm] || "Complexidade desconhecida";
+  return algorithms[algorithm] || "Complexidade desconhecida";
 }
 
-export function formatMetrics(result, text, pattern, algorithm) {
-  return {
-    time: result.time.toFixed(4),
+export function createSearchResult(result, text, pattern, algorithm) {
+  return new SearchResult({
+    algorithm,
+    matches: result.matches,
     comparisons: result.comparisons,
-    matches: result.matches.length,
+    time: Number(result.time.toFixed(4)),
     textSize: text.length,
     patternSize: pattern.length,
     complexity: getComplexity(algorithm)
+  });
+}
+
+export function formatMetrics(searchResult) {
+  return {
+    time: `${searchResult.time.toFixed(4)}ms`,
+    comparisons: searchResult.comparisons,
+    matches: searchResult.matches.length,
+    textSize: searchResult.textSize,
+    patternSize: searchResult.patternSize,
+    complexity: searchResult.complexity
   };
 }
 
