@@ -1,7 +1,7 @@
-import { DiagConsoleLogger, DiagLogLevel, diag, trace } from "../../node_modules/@opentelemetry/api/build/esm/index.js";
-import { WebTracerProvider } from "../../node_modules/@opentelemetry/sdk-trace-web/build/esm/index.js";
-import { ConsoleSpanExporter, SimpleSpanProcessor } from "../../node_modules/@opentelemetry/sdk-trace-base/build/esm/index.js";
-import { MeterProvider, ConsoleMetricExporter, PeriodicExportingMetricReader } from "../../node_modules/@opentelemetry/sdk-metrics/build/esm/index.js";
+import { DiagConsoleLogger, DiagLogLevel, diag, trace } from "https://esm.sh/@opentelemetry/api@1.4.1";
+import { WebTracerProvider } from "https://esm.sh/@opentelemetry/sdk-trace-web@1.9.1";
+import { ConsoleSpanExporter, SimpleSpanProcessor } from "https://esm.sh/@opentelemetry/sdk-trace-base@1.9.1";
+import { MeterProvider, ConsoleMetricExporter, PeriodicExportingMetricReader } from "https://esm.sh/@opentelemetry/sdk-metrics@1.29.0";
 
 let tracer;
 let meter;
