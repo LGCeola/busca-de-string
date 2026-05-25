@@ -1,4 +1,4 @@
-# busca-de-string
+# Busca-de-string
 Repositório dedicado a atividade acadêmica
 
 ## Documentação
