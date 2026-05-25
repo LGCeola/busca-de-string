@@ -17,7 +17,3 @@ Separação de responsabilidades
 - Observabilidade: `telemetry.js` é a única responsável por inicializar tracer/meter e expor helpers.
 - UI: `ui.js` apenas orquestra a interação e apresenta resultados/visualizações.
 
-Recomendações
-- Evitar lógica de negócio na UI; mover medições ou benchmarking para um `searchService.js` se ampliar funcionalidades.
-- Adicionar testes automatizados para cada estratégia e para o `metrics`.
-- Padronizar retornos (ex.: sempre retornar instâncias de `SearchResult`).

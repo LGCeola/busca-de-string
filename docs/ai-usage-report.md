@@ -30,13 +30,3 @@ Limitações e recomendações de revisão humana
 Registro de comandos executados localmente
 - `npm init -y` (quando necessário)
 - `npm install ... --legacy-peer-deps` (instalação de pacotes OpenTelemetry)
-
-Sugestões para o próximo sprint
-- Implementar um dashboard frontend para visualizar execuções históricas.
-- Adicionar persistência local (IndexedDB) para benchmarking com grandes arquivos.
-- Criar testes e CI que validem comportamento e não regredam a instrumentação.
-
-Se quiser, eu posso:
-- Gerar um commit sugerido com todas as mudanças.
-- Criar o esqueleto do dashboard (frontend) e endpoints de ingestão (collector).
-- Preparar comandos para executar benchmarks com arquivos grandes e coletar resultados.
