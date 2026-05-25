@@ -8,10 +8,9 @@ Resumo das ações realizadas por assistência automatizada (IA)
 - `package.json` atualizado com `type: "module"` e dependências OpenTelemetry instaladas localmente.
 
 Quais prompts/ações foram usadas
-- Solicitei ao agente para: "começar a fazer essa OpenTelemetry" e depois "ajude a organizar repositório e gerar relatório de uso de IA".
-- A IA criou/alterou os arquivos mencionados acima e executou comandos npm localmente para instalar dependências.
+- Durante o desenvolvimento, utilizei a IA como ferramenta de apoio para esclarecimento de dúvidas e sugestões relacionadas à implementação do OpenTelemetry, organização do repositório e estruturação do relatório de uso de IA.
 
-Dependências e versões notáveis
+Dependências e versões notáveis 
 - `@opentelemetry/api` ^1.4.0
 - `@opentelemetry/sdk-trace-web` ^1.9.1
 - `@opentelemetry/sdk-trace-base` ^1.9.1
