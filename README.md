@@ -1,6 +1,6 @@
 # Busca de String
 
-Projeto acadêmico desenvolvido para análise, comparação e monitoramento de algoritmos de busca, aplicando boas práticas de engenharia de software e observabilidade com OpenTelemetry.
+Projeto desenvolvido para análise, comparação e monitoramento de algoritmos de busca, aplicando boas práticas de engenharia de software e observabilidade com OpenTelemetry.
 
 ---
 
@@ -24,7 +24,6 @@ Além disso, o projeto aplica conceitos de:
 - Node.js
 - OpenTelemetry
 - HTML/CSS
-- npm
 
 ---
 
