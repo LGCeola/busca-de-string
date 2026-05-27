@@ -2,8 +2,6 @@
 
 ## Projeto: Busca de Strings
 
----
-
 ## Estrutura Principal
 
 ```txt
