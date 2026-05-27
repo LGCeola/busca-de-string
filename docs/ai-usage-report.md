@@ -21,11 +21,6 @@ Intervenções manuais e decisões tomadas
 - Optei por exportadores de console como POC (prova de conceito) para facilitar verificação imediata em DevTools.
 - Ajustes feitos à mão nos arquivos para compatibilidade ESM no navegador e no ambiente Node local (adicionado `type: "module"` no `package.json`).
 
-Limitações e recomendações de revisão humana
-- Verificar compatibilidade de versões OTel caso a equipe prefira exportadores OTLP mais recentes.
-- Revisar `telemetry.js` antes de apontar para um collector em produção (segurança/endpoints).
-- Escrever testes automatizados para garantir nenhum algoritmo ou medição foi quebrada.
-
 Registro de comandos executados localmente
 - `npm init -y` (quando necessário)
 - `npm install ... --legacy-peer-deps` (instalação de pacotes OpenTelemetry)
