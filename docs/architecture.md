@@ -1,19 +1,123 @@
-Projeto: Busca de Strings — Arquitetura
+# Arquitetura do Sistema
 
-Resumo
-- Objetivo: comparar algoritmos de busca de padrão em strings, medir desempenho e ilustrar comportamento passo-a-passo.
+## Projeto: Busca de Strings
 
-Estrutura principal
-- `src/js/strategies/`: implementações de algoritmos (Naive, KMP, Rabin-Karp, Boyer-Moore).
-- `src/js/search-strategy.js`: interface (padrão Strategy).
-- `src/js/ui.js`: camada de apresentação — manipula DOM e interage com o usuário.
-- `src/js/metrics.js`: coleta, formata e modela resultados de busca (`SearchResult`).
-- `src/js/telemetry.js`: inicialização OpenTelemetry (traces + métricas).
-- `src/js/search-result.js`: modelo de retorno `SearchResult`.
+---
 
-Separação de responsabilidades
-- Algoritmos: implementação pura dos algoritmos e gerador `stepByStep` para visualização.
-- Serviço de execução/medição: `metrics.js` centraliza medição e criação de `SearchResult`.
-- Observabilidade: `telemetry.js` é a única responsável por inicializar tracer/meter e expor helpers.
-- UI: `ui.js` apenas orquestra a interação e apresenta resultados/visualizações.
+## Estrutura Principal
 
+```txt
+src/js/
+ ┣ strategies/
+ ┃ ┣ boyer-moore.js
+ ┃ ┣ kmp.js
+ ┃ ┣ naive-search.js
+ ┃ ┣ rabin-karp.js
+ ┃ ┗ search-strategy.js
+ ┣ visualization/
+ ┣ main.js
+ ┣ metrics.js
+ ┣ search-result.js
+ ┣ telemetry.js
+ ┗ ui.js
+
+---
+
+## Componentes da Aplicação
+
+### `strategies/`
+
+Contém as implementações dos algoritmos de busca:
+
+- Naive Search
+- KMP (Knuth-Morris-Pratt)
+- Rabin-Karp
+- Boyer-Moore
+
+Cada algoritmo possui sua própria implementação seguindo o padrão Strategy, permitindo fácil extensão e manutenção.
+
+Além da execução da busca, os algoritmos também fornecem visualização passo a passo da execução.
+
+---
+
+### `search-strategy.js`
+
+Define a interface base utilizada pelas estratégias de busca.
+
+Responsabilidades:
+- Padronizar a implementação dos algoritmos
+- Permitir troca dinâmica de estratégias
+- Facilitar reutilização e extensibilidade
+
+---
+
+### `metrics.js`
+
+Responsável pela coleta e organização das métricas de execução.
+
+Funções principais:
+- Medição de tempo de execução
+- Contagem de operações
+- Geração de resultados padronizados
+- Criação de objetos `SearchResult`
+
+---
+
+### `search-result.js`
+
+Define a estrutura de retorno utilizada pela aplicação.
+
+O modelo `SearchResult` centraliza os dados retornados pelos algoritmos, garantindo padronização entre resultados e facilitando integração com a interface e monitoramento.
+
+---
+
+### `telemetry.js`
+
+Responsável pela inicialização da observabilidade utilizando OpenTelemetry.
+
+Funcionalidades:
+- Configuração de traces
+- Configuração de métricas
+- Exportação de dados de telemetria
+- Integração com monitoramento
+
+---
+
+### `ui.js`
+
+Camada responsável pela interface e interação com o usuário.
+
+Responsabilidades:
+- Manipulação do DOM
+- Execução dos algoritmos selecionados
+- Exibição de métricas e resultados
+- Renderização das visualizações passo a passo
+
+---
+
+## Separação de Responsabilidades
+
+A arquitetura do projeto foi organizada visando desacoplamento e reutilização dos componentes.
+
+### Algoritmos
+Responsáveis apenas pela lógica de busca e geração das etapas de execução.
+
+### Serviço de Métricas
+Centraliza medição de desempenho e padronização dos resultados.
+
+### Observabilidade
+Isola toda configuração relacionada ao OpenTelemetry em um único módulo.
+
+### Interface
+Responsável exclusivamente pela interação com o usuário e apresentação visual.
+
+---
+
+## Padrões e Boas Práticas Utilizadas
+
+- Padrão Strategy
+- Separação de responsabilidades
+- Modularização
+- Código reutilizável
+- Estrutura padronizada de retorno
+- Observabilidade com OpenTelemetry
