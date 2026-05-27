@@ -20,6 +20,7 @@ src/js/
  ┣ search-result.js
  ┣ telemetry.js
  ┗ ui.js
+```
 
 ---
 
