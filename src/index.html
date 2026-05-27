@@ -1,82 +1,333 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comparação de Algoritmos - Busca em Strings</title>
+  <title>Busca em Strings - Dashboard & Observabilidade</title>
 
+  <!-- Fontes Premium do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Estilos base -->
   <link rel="stylesheet" href="./css/style.css">
+
+  <!-- Chart.js para Visualização de Métricas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
+  <div class="glow-bg"></div>
 
-  <header>
-    <h1>Comparação de Algoritmos de Busca em Strings</h1>
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <span class="badge-live">LIVE MONITOR</span>
+        <h1>Busca de Strings</h1>
+      </div>
+      <p class="subtitle">Evolução Arquitetural, Padrão Strategy & Observabilidade com OpenTelemetry</p>
+    </div>
   </header>
 
-  <main class="container">
+  <main class="dashboard-grid">
 
-    <!-- PAINEL DE CONTROLE -->
-    <section class="card">
-      <h2>Configuração</h2>
-
-      <label>Upload</label>
-      <div class="upload-container">
-        <input type="file" id="uploadTxt" name="myFiles" accept=".txt" multiple class="hidden-input">
-
-        <label for="uploadTxt" class="upload-button">
-          <span>📁 Carregar arquivos .txt</span>
-        </label>
-
-        <textarea name="content" id="textInput" placeholder="Digite aqui..."></textarea>
+    <!-- COLUNA ESQUERDA: PAINEL DE CONTROLE -->
+    <section class="panel panel-controls">
+      <div class="panel-header">
+        <div class="icon-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
+        <h2>Configurações de Busca</h2>
       </div>
 
-      <br>
-      <label>String de Busca (Pattern)</label>
-      <input type="text" id="patternInput" placeholder="Digite a string de busca (pattern).">
+      <div class="panel-body">
+        <div class="control-group">
+          <label class="field-label">Entrada de Texto</label>
+          <div class="upload-area">
+            <input type="file" id="uploadTxt" name="myFiles" accept=".txt" multiple class="hidden-input">
+            <label for="uploadTxt" class="btn btn-upload">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+              </svg>
+              <span>Carregar arquivo (.txt)</span>
+            </label>
+          </div>
+          <textarea id="textInput"
+            placeholder="Insira o texto de busca aqui ou faça upload de um arquivo..."></textarea>
+        </div>
 
-      <br>
-      <label>Algoritmo</label>
-      <select id="algorithmSelect">
-        <option value="naive">Naive</option>
-        <option value="kmp">KMP</option>
-        <option value="rabin-karp">Rabin-Karp</option>
-        <option value="boyer-moore">Boyer-Moore</option>
-      </select>
+        <div class="control-row">
+          <div class="control-group">
+            <label for="patternInput" class="field-label">Padrão (Pattern)</label>
+            <input type="text" id="patternInput" placeholder="Insira o padrão de busca">
+          </div>
 
-      <button id="runBtn">Executar</button>
-      <button id="stepBtn">Passo a passo</button>
-      <button id="nextStepBtn">Próximo passo</button>
+          <div class="control-group">
+            <label for="algorithmSelect" class="field-label">Algoritmo</label>
+            <div class="select-wrapper">
+              <select id="algorithmSelect">
+                <option value="naive">Naive (Força Bruta)</option>
+                <option value="kmp">KMP (Knuth-Morris-Pratt)</option>
+                <option value="rabin-karp">Rabin-Karp</option>
+                <option value="boyer-moore">Boyer-Moore</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
+        <div class="button-grid">
+          <button id="runBtn" class="btn btn-primary">Executar</button>
+          <button id="compareAllBtn" class="btn btn-accent">Comparar Todos</button>
+        </div>
+
+        <div class="divider">Modo Passo a Passo</div>
+
+        <div class="button-grid-steps">
+
+          <button id="stepBtn" class="btn btn-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+            </svg>
+            Iniciar
+          </button>
+          <button id="nextStepBtn" class="btn btn-secondary" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811V8.69ZM12.75 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977V8.69Z" />
+            </svg>
+            Próximo Passo
+          </button>
+        </div>
+      </div>
     </section>
 
-    <!-- RESULTADOS -->
-    <section class="results">
+    <!-- COLUNA DIREITA: RESULTADOS, VISUALIZAÇÃO E DASHBOARD -->
+    <div class="main-content-flow">
 
-      <!-- MÉTRICAS -->
-      <div class="card metrics">
-        <h2>Métricas</h2>
-        <p><strong>Tempo:</strong> <span id="time">-</span></p>
-        <p><strong>Comparações:</strong> <span id="comparisons">-</span></p>
-        <p><strong>Tamanho do texto:</strong> <span id="textSize">-</span></p>
-        <p><strong>Tamanho do padrão:</strong> <span id="patternSize">-</span></p>
-        <p><strong>Complexidade:</strong> <span id="complexity">-</span></p>
+      <!-- CARDS DE MÉTRICAS RÁPIDAS -->
+      <section class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-icon blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-title">Tempo de Execução</span>
+            <h3 id="time" class="metric-value">-</h3>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon green">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+            </svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-title">Comparações</span>
+            <h3 id="comparisons" class="metric-value">-</h3>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon purple">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-title">
+              Tamanho do Texto
+            </span>
+            <h3 id="textSize" class="metric-value">-</h3>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon yellow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-title">
+              Tamanho do Padrão
+            </span>
+            <h3 id="patternSize" class="metric-value">-</h3>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon red">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
+            </svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-title">
+              Complexidade
+            </span>
+            <h3 id="complexity" class="metric-value">-</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISUALIZAÇÃO DO ALGORITMO -->
+      <div class="grid-two-columns">
+        <section class="panel panel-visualization">
+          <div class="panel-header">
+            <div class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+            </div>
+            <h2>Destaque de Correspondências</h2>
+          </div>
+          <div class="panel-body">
+            <div id="textDisplay" class="monospaced-viewer">O texto de busca aparecerá destacado aqui após a execução.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel panel-step-log">
+          <div class="panel-header">
+            <div class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+              </svg>
+            </div>
+            <h2>Log de Execução Passo a Passo</h2>
+          </div>
+          <div class="panel-body">
+            <div id="visualization" class="monospaced-log">Nenhuma simulação ativa no momento.</div>
+          </div>
+        </section>
       </div>
 
-      <!-- VISUALIZAÇÃO -->
-      <div class="card">
-        <h2>Visualização</h2>
+      <!-- DASHBOARD GRÁFICO -->
+      <section class="panel panel-dashboard">
+        <div class="panel-header">
+          <div class="icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+            </svg>
+          </div>
+          <h2>Painel Comparativo de Desempenho</h2>
+        </div>
+        <div class="panel-body">
+          <div class="charts-container">
+            <div class="chart-box">
+              <h3>Tempo de Execução (Milissegundos)</h3>
+              <div class="canvas-wrapper">
+                <canvas id="timeChart"></canvas>
+              </div>
+            </div>
+            <div class="chart-box">
+              <h3>Comparações de Caracteres Realizadas</h3>
+              <div class="canvas-wrapper">
+                <canvas id="compChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <div id="textDisplay"></div>
+      <!-- HISTÓRICO E TELEMETRIA -->
+      <div class="grid-two-columns">
+        <!-- HISTÓRICO -->
+        <section class="panel panel-history">
+          <div class="panel-header">
+            <div class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+            </div>
+            <h2>Histórico de Execuções</h2>
+          </div>
+          <div class="panel-body">
+            <div class="table-wrapper">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Algoritmo</th>
+                    <th>Tempo</th>
+                    <th>Comparações</th>
+                    <th>Matches</th>
+                    <th>Texto</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                  <tr class="empty-row">
+                    <td colspan="5">Nenhum teste executado ainda.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
 
-        <h3>Log</h3>
-        <div id="visualization"></div>
+        <!-- LIVE TELEMETRIA / OTEL -->
+        <section class="panel panel-telemetry">
+          <div class="panel-header">
+            <div class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
+              </svg>
+            </div>
+            <h2>Console de Telemetria OpenTelemetry (Live)</h2>
+          </div>
+          <div class="panel-body">
+            <div id="otelLogDisplay" class="telemetry-log">
+              <span class="telemetry-comment">// Aguardando inicialização do OpenTelemetry...</span>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+
+    </div>
 
   </main>
 
+  <footer class="app-footer">
+    <p>Desenvolvido para análise comparativa de algoritmos de casamento de padrões. Instrumentação via OpenTelemetry.
+    </p>
+  </footer>
+
   <script type="module" src="./js/ui.js"></script>
 </body>
+
 </html>

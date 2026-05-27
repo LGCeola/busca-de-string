@@ -10,6 +10,8 @@ let searchDurationHistogram;
 let comparisonCounter;
 let matchCounter;
 
+let logCallback = null;
+
 export function initializeTelemetry() {
   diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
@@ -45,7 +47,18 @@ export function initializeTelemetry() {
     description: "Número de correspondências encontradas"
   });
 
-  logTelemetry("telemetry.initialized", { source: "browser" });
+  logTelemetry("telemetry.initialized", { source: "browser", status: "OK" });
+}
+
+export function subscribeTelemetryLogs(callback) {
+  logCallback = callback;
+}
+
+export function logTelemetry(event, attributes = {}) {
+  diag.info(`[OTEL] ${event}: ${JSON.stringify(attributes)}`);
+  if (logCallback) {
+    logCallback(event, attributes);
+  }
 }
 
 export function createSearchSpan(algorithm, textSize, patternSize) {
@@ -65,6 +78,36 @@ export function createSearchSpan(algorithm, textSize, patternSize) {
     }
   });
 
+  logTelemetry("span.started", {
+    name: "search.execution",
+    attributes: { algorithm, textSize, patternSize }
+  });
+
+  // Interceptar chamadas para gerar logs dinâmicos na tela
+  const originalSetAttribute = span.setAttribute.bind(span);
+  const originalEnd = span.end.bind(span);
+  const originalRecordException = span.recordException ? span.recordException.bind(span) : null;
+
+  span.setAttribute = (key, value) => {
+    originalSetAttribute(key, value);
+    logTelemetry("span.attribute.set", { key, value });
+    return span;
+  };
+
+  span.end = () => {
+    originalEnd();
+    logTelemetry("span.ended", { name: "search.execution" });
+  };
+
+  span.recordException = (error) => {
+    if (originalRecordException) {
+      originalRecordException(error);
+    }
+    logTelemetry("span.exception.recorded", {
+      error: error.message || error
+    });
+  };
+
   return span;
 }
 
@@ -76,8 +119,14 @@ export function recordSearchMetrics({ algorithm, matches, comparisons, time }) {
   searchDurationHistogram.record(time, labels);
   comparisonCounter.add(comparisons, labels);
   matchCounter.add(matches, labels);
-}
 
-export function logTelemetry(event, attributes = {}) {
-  diag.debug(`[OTEL] ${event}`, attributes);
+  logTelemetry("metrics.recorded", {
+    algorithm,
+    metrics: {
+      execution_count: 1,
+      duration_ms: time,
+      comparisons_count: comparisons,
+      matches_count: matches
+    }
+  });
 }

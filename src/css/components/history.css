@@ -1,0 +1,76 @@
+/* ==========================================================================
+   HISTORY TABLE
+   ========================================================================== */
+
+.table-wrapper {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.history-table th {
+  background-color: rgba(15, 23, 42, 0.9);
+  padding: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+}
+
+.history-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-table tr:hover:not(.empty-row) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.empty-row td {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 24px;
+}
+
+.history-algo-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.history-algo-badge.naive {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+}
+
+.history-algo-badge.kmp {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.history-algo-badge.rabin-karp {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.history-algo-badge.boyer-moore {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c084fc;
+}
