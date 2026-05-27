@@ -1,26 +1,39 @@
-Relatório de Uso de IA — Assistência automatizada
+# Relatório de Uso de IA — Assistência Automatizada
 
-Resumo das ações realizadas por assistência automatizada (IA)
-- Instrumentação OpenTelemetry integrada ao frontend em `src/js/telemetry.js`.
-- Estrutura `SearchResult` adicionada em `src/js/search-result.js`.
-- `src/js/metrics.js` refatorado para produzir `SearchResult` e formatar métricas para a UI.
-- `src/js/ui.js` atualizado para inicializar telemetria, criar spans por execução e registrar métricas.
-- `package.json` atualizado com `type: "module"` e dependências OpenTelemetry instaladas localmente.
+## Resumo do uso de IA no projeto
+A IA foi utilizada como ferramenta de apoio durante o desenvolvimento do projeto, auxiliando principalmente com sugestões técnicas, esclarecimento de dúvidas e apoio na organização da arquitetura da aplicação.
 
-Quais prompts/ações foram usadas
-- Durante o desenvolvimento, utilizei a IA como ferramenta de apoio para esclarecimento de dúvidas e sugestões relacionadas à implementação do OpenTelemetry, organização do repositório e estruturação do relatório de uso de IA.
+O desenvolvimento, integração, testes e validaações finais foram realizados manualmente.
 
-Dependências e versões notáveis 
+## Atividades apoiadas pela IA
+- Sugestões para instrumentação com OpenTelemetry no frontend.
+- Apoio na organização da estrutura do projeto.
+- Sugestões de implementação para a estrutura `SearchResult`.
+- Auxílio na organização das métricas e integração com a interface.
+- Apoio na documentação e estruturação do relatório de uso de IA.
+
+## Arquivos relacionados às implementações
+- `src/js/telemetry.js`
+- `src/js/search-result.js`
+- `src/js/metrics.js`
+- `src/js/ui.js`
+- `package.json`
+
+## Dependências e versões utilizadas
 - `@opentelemetry/api` ^1.4.0
 - `@opentelemetry/sdk-trace-web` ^1.9.1
 - `@opentelemetry/sdk-trace-base` ^1.9.1
 - `@opentelemetry/sdk-metrics` ^1.29.0
 
-Intervenções manuais e decisões tomadas
-- Usei `--legacy-peer-deps` ao instalar para resolver conflitos de peer dependency entre versões mais recentes.
-- Optei por exportadores de console como POC (prova de conceito) para facilitar verificação imediata em DevTools.
-- Ajustes feitos à mão nos arquivos para compatibilidade ESM no navegador e no ambiente Node local (adicionado `type: "module"` no `package.json`).
+## Decisões e intervenções manuais
+- Resolução manual de conflitos de dependências utilizando `--legacy-peer-deps`.
+- Configuração manual do ambiente ESM com `type: "module"` no `package.json`.
+- Ajustes realizados manualmente na interface e no dashboard.
+- Revisão e adaptação das sugestões fornecidas pela IA para atender aos requisitos da atividade.
 
-Registro de comandos executados localmente
-- `npm init -y` (quando necessário)
-- `npm install ... --legacy-peer-deps` (instalação de pacotes OpenTelemetry)
+## Comandos executados localmente
+- `npm init -y`
+- `npm install ... --legacy-peer-deps`
+
+## Considerações finais
+O uso da IA contribuiu como suporte técnico e consultivo durante o desenvolvimento, auxiliando na produtividade e entendimento das ferramentas utilizadas, sem substituir a implementação e validaação realizadas manualmente.
