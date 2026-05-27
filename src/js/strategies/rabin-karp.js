@@ -132,7 +132,7 @@ export default class RabinKarp extends SearchStrategy {
         if (textHash < 0) textHash += mod;
 
         yield {
-          type: "refresh",
+          type: "rehash",
           oldHash,
           newHash: textHash,
           removedChar: text[i],

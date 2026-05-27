@@ -24,6 +24,7 @@ const textInput = document.getElementById("textInput");
 const patternInput = document.getElementById("patternInput");
 const algorithmSelect = document.getElementById("algorithmSelect");
 const nextStepBtn = document.getElementById("nextStepBtn");
+const historyTableBody = document.getElementById("historyTableBody");
 
 const getStrategy = () => currentStrategy = setStrategy(algorithmSelect.value);
 
@@ -51,12 +52,14 @@ document.getElementById("runBtn").addEventListener("click", () => {
     const result = run(text, pattern);
     
     recordSearchMetrics({ algorithm: algo, matches: result.matches.length, comparisons: result.comparisons, time: result.time });
-    span.setAttributes({ "search.matches": result.matches.length, "search.comparisons": result.comparisons, "search.duration_ms": result.time });
+    span.setAttribute("search.matches", result.matches.length);
+    span.setAttribute("search.comparisons", result.comparisons);
+    span.setAttribute("search.duration_ms", result.time);
 
     updateMetricsUI(result);
     renderMatches(text, pattern, result.matches);
     updateChartData(algo, result.time, result.comparisons);
-    addToHistory(result);
+    addToHistory(result, historyTableBody, text);
 
     log(`Execução concluída. ${result.matches.length} correspondências encontradas.`);
     logTelemetry("search.completed", { algorithm: algo, durationMs: result.time, comparisons: result.comparisons, matches: result.matches.length });
@@ -90,10 +93,12 @@ document.getElementById("compareAllBtn").addEventListener("click", () => {
       results[algo] = result;
 
       recordSearchMetrics({ algorithm: algo, matches: result.matches.length, comparisons: result.comparisons, time: result.time });
-      span.setAttributes({ "search.matches": result.matches.length, "search.comparisons": result.comparisons, "search.duration_ms": result.time });
+      span.setAttribute("search.matches", result.matches.length);
+      span.setAttribute("search.comparisons", result.comparisons);
+      span.setAttribute("search.duration_ms", result.time);
 
       updateChartData(algo, result.time, result.comparisons);
-      addToHistory(result);
+      addToHistory(result, historyTableBody, text);
       log(`[${algo.toUpperCase()}] Tempo: ${result.time.toFixed(4)}ms | Comparações: ${result.comparisons}`);
     } catch (error) {
       span.recordException(error);

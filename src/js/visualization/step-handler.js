@@ -24,6 +24,9 @@ export function handleStep(step, text) {
     case "rehash":
       log(`Rehash -${step.removedChar} +${step.addedChar}`);
       break;
+    case "hashMatch":
+      log(`Hashes idênticos na posição ${step.index}! Verificando caracteres para descartar falso positivo...`);
+      break;
     default:
       console.warn("Tipo de passo desconhecido:", step);
   }

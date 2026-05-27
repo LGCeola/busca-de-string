@@ -8,9 +8,14 @@ export default class NaiveSearch extends SearchStrategy {
     for (let i = 0; i <= text.length - pattern.length; i++) {
       let j = 0;
 
-      while (j < pattern.length && text[i + j] === pattern[j]) {
+      while (j < pattern.length) {
         comparisons++;
-        j++;
+
+        if (text[i + j] === pattern[j]) {
+          j++;
+        } else {
+          break;
+        }
       }
 
       if (j === pattern.length) {
@@ -37,7 +42,7 @@ export default class NaiveSearch extends SearchStrategy {
 
         if (!match) break;
 
-        if (j === pattern.length) {
+        if (j === pattern.length - 1) {
           yield {
             type: "match",
             position: i
