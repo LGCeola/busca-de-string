@@ -1,5 +1,9 @@
 # Relatório de Uso de IA — Assistência Automatizada
 
+## Acadêmicos
+- Francisco Marcelo Caetano Costa
+- Lucas Grimes Ceola
+
 ## Resumo do uso de IA no projeto
 A IA foi utilizada como ferramenta de apoio durante o desenvolvimento do projeto, auxiliando principalmente com sugestões técnicas, esclarecimento de dúvidas e apoio na organização da arquitetura da aplicação.
 
