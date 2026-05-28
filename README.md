@@ -4,6 +4,12 @@ Projeto desenvolvido para análise, comparação e monitoramento de algoritmos d
 
 ---
 
+## Acadêmicos
+- Francisco Marcelo Caetano Costa
+- Lucas Grimes Ceola
+
+---
+
 ## Objetivo
 
 O objetivo deste projeto é implementar algoritmos de busca e analisar seu comportamento utilizando métricas, traces e logs, permitindo comparações entre desempenho teórico e prático.
